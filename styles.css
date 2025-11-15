@@ -47,8 +47,9 @@ header{
   z-index:60;
 }
 /* Header layout: keep existing spacing but allow a small inline logo without changing height */
-header .container{display:flex;align-items:center;gap:0.75rem}
-header h1{margin:0;font-size:1.5rem;flex:1;line-height:1}
+/* Header layout: logo left, title centered, actions (menu) right using CSS grid */
+header .container{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:0.75rem}
+header h1{margin:0;font-size:1.5rem;line-height:1;text-align:center;grid-column:2}
 header .tagline{margin:0.25rem 0 0;font-weight:400;opacity:.95}
 
 /* logo sizing: small enough to not change header height, scales on small screens */
@@ -88,7 +89,7 @@ nav ul{flex-wrap:wrap}
   nav ul{flex-direction:column;align-items:stretch}
   nav a{display:block;padding:.75rem}
   /* On small screens prefer a larger centered logo and hide header text to avoid clutter */
-  header .container{justify-content:center}
+  header .container{display:flex;justify-content:center}
   header h1{display:none}
   header .tagline{display:none}
   .site-logo{height:3.6rem}
@@ -159,7 +160,7 @@ textarea{min-height:120px}
   /* keep hamburger vertically centered even on very small screens */
   .menu-toggle{right:.6rem;top:50%;transform:translateY(-50%)}
   /* make logo bigger and centered on very small screens */
-  header .container{justify-content:center}
+  header .container{display:flex;justify-content:center}
   .site-logo{height:4.4rem}
 }
 
