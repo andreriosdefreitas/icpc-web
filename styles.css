@@ -25,6 +25,13 @@ body{
   overflow:hidden;
 }
 
+/* Remove default list markers globally and reset list spacing */
+ul,ol{
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
 .container{max-width:var(--max-width);margin:0 auto;padding:0 1rem}
 
 header{
@@ -80,6 +87,11 @@ nav ul{flex-wrap:wrap}
 @media (max-width:599px){
   nav ul{flex-direction:column;align-items:stretch}
   nav a{display:block;padding:.75rem}
+  /* On small screens prefer a larger centered logo and hide header text to avoid clutter */
+  header .container{justify-content:center}
+  header h1{display:none}
+  header .tagline{display:none}
+  .site-logo{height:3.6rem}
 }
 
 /* Hamburger menu button */
@@ -96,7 +108,8 @@ nav ul{flex-wrap:wrap}
 .menu-toggle svg{display:block}
 
 @media (max-width:599px){
-  .menu-toggle{display:inline-flex;position:absolute;right:1rem;top:1rem;z-index:30}
+  /* Position hamburger vertically centered inside the header to avoid overlapping header text */
+  .menu-toggle{display:inline-flex;position:absolute;right:1rem;top:50%;transform:translateY(-50%);z-index:30}
   /* on small screens nav stays in normal flow (dropdown handled by absolute ul) */
   nav{position:relative;z-index:22}
   /* hide nav by default on small screens; use transform+opacity for smoother animation */
@@ -140,11 +153,30 @@ textarea{min-height:120px}
 
 /* Compact header on very small screens */
 @media (max-width:420px){
-  header{padding:.6rem 0}
+  header{padding:.8rem 0}
   header h1{font-size:1.05rem}
   header .tagline{display:none}
-  .menu-toggle{right:.6rem;top:.6rem}
+  /* keep hamburger vertically centered even on very small screens */
+  .menu-toggle{right:.6rem;top:50%;transform:translateY(-50%)}
+  /* make logo bigger and centered on very small screens */
+  header .container{justify-content:center}
+  .site-logo{height:4.4rem}
 }
+
+/* Centered responsive image utility used by content pages */
+.centered-responsive-img{
+  display:block;
+  max-width:100%;
+  height:auto;
+  margin-left:auto;
+  margin-right:auto;
+  border-radius:6px; /* slight rounding for nicer look */
+}
+
+.figure-wrapper{width:100%;display:flex;justify-content:center;align-items:center;text-align:center;margin:1rem 0}
+
+/* Specific helper for a larger logo with a sensible max width */
+.logo-large{max-width:520px;width:100%;height:auto}
 
 /* Footer address link: sempre branco e sem sublinhado */
 footer #address a,
