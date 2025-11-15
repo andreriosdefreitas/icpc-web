@@ -1,0 +1,159 @@
+:root{
+  --brand-green: rgb(0,102,0);
+  --black: rgb(0,0,0);
+  --white: rgb(255,255,255);
+  --max-width: 1000px;
+  /* dynamic layout offsets (set from JS) */
+  --header-height: 0px;
+  --nav-height: 0px;
+  --footer-height: 0px;
+  --content-offset-top: 0px;
+  --content-offset-bottom: 0px;
+}
+
+/* Reset-ish */
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+  color:var(--black);
+  background:var(--white);
+  line-height:1.5;
+  /* Make body a fixed-height viewport; main will scroll so header/footer remain visible */
+  height:100vh;
+  overflow:hidden;
+}
+
+.container{max-width:var(--max-width);margin:0 auto;padding:0 1rem}
+
+header{
+  background:var(--brand-green);
+  color:var(--white);
+  /* reduzir espessura do header para diminuir a margem entre header e conteúdo */
+  padding:1.25rem 0;
+  /* Fix header so it stays visible */
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  z-index:60;
+}
+/* Header layout: keep existing spacing but allow a small inline logo without changing height */
+header .container{display:flex;align-items:center;gap:0.75rem}
+header h1{margin:0;font-size:1.5rem;flex:1;line-height:1}
+header .tagline{margin:0.25rem 0 0;font-weight:400;opacity:.95}
+
+/* logo sizing: small enough to not change header height, scales on small screens */
+.logo-link{display:inline-flex;align-items:center;text-decoration:none}
+/* reduzir tamanho do logo para acompanhar o header mais compacto */
+.site-logo{height:2.4rem;width:auto;flex:0 0 auto}
+@media (max-width:420px){
+  /* Keep proportional size on small screens (approx two-thirds of desktop logo) */
+  .site-logo{height:1.6rem}
+  header{padding:.6rem 0}
+}
+
+/* Ensure nav sits below the fixed header by default (uses JS-updated --header-height) */
+nav{margin-top:var(--header-height);background:transparent;border-bottom:1px solid rgba(0,0,0,.06)}
+nav ul{list-style:none;margin:0;padding:0;display:flex;gap:1rem}
+nav a{color:var(--black);text-decoration:none;padding:.6rem .4rem;border-radius:6px;display:inline-block}
+nav a:hover, nav a:focus{background:rgba(0,0,0,.06)}
+
+main{
+  /* O main deve ocupar a área entre header e footer e ser o contêiner de scroll */
+  margin-top: 0;
+  height: calc(100vh - var(--header-height) - var(--footer-height));
+  box-sizing: border-box;
+  overflow: auto;
+  padding-top: 0; /* conteúdo inicia no topo do main */
+  padding-bottom: var(--footer-height); /* evita que conteúdo fique escondido atrás do footer */
+  padding-left: 0;
+  padding-right: 0;
+}
+article h2{margin-top:0}
+
+footer{background:var(--black);color:var(--white);padding:.75rem 0;text-align:center;z-index:60;position:fixed;left:0;right:0;bottom:0}
+
+/* Nav responsiveness */
+nav ul{flex-wrap:wrap}
+@media (max-width:599px){
+  nav ul{flex-direction:column;align-items:stretch}
+  nav a{display:block;padding:.75rem}
+}
+
+/* Hamburger menu button */
+.menu-toggle{
+  display:none; /* shown only on small screens */
+  background:transparent;
+  border:0;
+  color:var(--white);
+  font-size:1.25rem;
+  align-items:center;
+  gap:.5rem;
+  cursor:pointer;
+}
+.menu-toggle svg{display:block}
+
+@media (max-width:599px){
+  .menu-toggle{display:inline-flex;position:absolute;right:1rem;top:1rem;z-index:30}
+  /* on small screens nav stays in normal flow (dropdown handled by absolute ul) */
+  nav{position:relative;z-index:22}
+  /* hide nav by default on small screens; use transform+opacity for smoother animation */
+  nav ul{display:flex;flex-direction:column;gap:0;background:var(--white);position:absolute;left:0;right:0;top:100%;padding:0 1rem;border-bottom:1px solid rgba(0,0,0,.06);
+    transform: translateY(-8px);opacity:0;visibility:hidden;pointer-events:none;transition:transform 180ms cubic-bezier(.2,.8,.2,1),opacity 180ms linear;will-change:transform,opacity}
+  body.nav-open nav ul{transform:none;opacity:1;visibility:visible;pointer-events:auto;padding:0.5rem 1rem;z-index:25;box-shadow:0 8px 20px rgba(0,0,0,.12)}
+  /* Também aceita quando o nav tem classe .open (mais robusto) */
+  nav.open ul{transform:none;opacity:1;visibility:visible;pointer-events:auto;padding:0.5rem 1rem;z-index:25;box-shadow:0 8px 20px rgba(0,0,0,.12)}
+  body.nav-open nav{background:transparent}
+}
+
+/* Active menu item: bold + underline, no filled background */
+nav a.active{
+  background: transparent !important;
+  color: var(--brand-green) !important;
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-color: var(--brand-green);
+  text-underline-offset: 3px;
+}
+
+/* Buttons / actions */
+button{background:var(--brand-green);color:var(--white);border:none;padding:.6rem .9rem;border-radius:6px;cursor:pointer}
+
+/* Forms (if present) */
+form{display:grid;gap:.6rem}
+label{display:flex;flex-direction:column;font-weight:600}
+input,textarea{padding:.6rem;border:1px solid rgba(0,0,0,.12);border-radius:6px;font-size:1rem}
+textarea{min-height:120px}
+
+/* Social list */
+.social-list{list-style:none;padding:0;margin:1rem 0;display:flex;flex-direction:column;gap:.6rem;max-width:400px}
+.social-list a{display:inline-flex;align-items:center;gap:.6rem;text-decoration:none;color:var(--black);font-weight:600}
+.social-list a svg{width:20px;height:20px;flex:0 0 20px;color:var(--brand-green)}
+.social-list a:hover{opacity:.95}
+
+/* Responsive tweaks */
+@media (min-width:600px){
+  nav ul{gap:1.25rem}
+}
+
+/* Compact header on very small screens */
+@media (max-width:420px){
+  header{padding:.6rem 0}
+  header h1{font-size:1.05rem}
+  header .tagline{display:none}
+  .menu-toggle{right:.6rem;top:.6rem}
+}
+
+/* Footer address link: sempre branco e sem sublinhado */
+footer #address a,
+footer #address a:visited,
+footer #address a:focus,
+footer #address a:active{
+  color: var(--white) !important;
+  text-decoration: none !important;
+}
+
+/* Aumenta área clicável do endereço para melhor usabilidade em mobile */
+footer #address a{display:inline-block;padding:.25rem .15rem}
